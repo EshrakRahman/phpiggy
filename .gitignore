@@ -1,6 +1,33 @@
-composer.phar
+# Ignore Composer’s vendor directory
 /vendor/
 
-# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# Ignore Composer's PHAR file
+composer.phar
+
+# Ignore local Composer lock if this is a library (keep if app)
+# Uncomment below only if you're writing a *library* and don’t want to commit lock
 # composer.lock
+
+# Environment files
+.env
+.env.*.local
+
+# Logs and cache
+*.log
+cache/
+tmp/
+*.cache
+
+# IDE/project files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# PHPUnit / test coverage
+.phpunit.result.cache
+coverage/

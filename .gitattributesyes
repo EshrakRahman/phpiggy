@@ -1,0 +1,32 @@
+# Normalize line endings (use LF in repo, convert to OS-specific locally)
+* text=auto
+
+# Mark binary files so Git won't try to diff/merge them
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+
+# Ensure shell scripts have LF endings
+*.sh text eol=lf
+
+# PHP & related files should always be treated as text
+*.php text
+*.css text
+*.js text
+*.html text
+*.json text
+*.xml text
+*.md text
+
+# Composer-related files
+composer.lock text
+composer.json text
+
+# Ignore vendor from language stats on GitHub
+/vendor/* linguist-vendored
+
