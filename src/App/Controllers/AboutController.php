@@ -6,11 +6,11 @@ namespace App\Controllers;
 use Framework\TemplateEngine;
 use App\Config\Path;
 class AboutController {
-    private TemplateEngine $view;
+    
 
-    public function __construct()
+    public function __construct(private TemplateEngine $view)
     {
-        $this->view = new TemplateEngine(Path::VIEW);
+
 
     }
 
