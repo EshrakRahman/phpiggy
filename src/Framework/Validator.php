@@ -24,14 +24,22 @@ class Validator
         {
             foreach ($rules as $rule)
             {
+                $ruleParams = [];
+
+                if(str_contains($rule, ":"))
+                {
+                  [$rule, $ruleParams] =  explode(":",$rule);
+                  $ruleParams = explode(",", $ruleParams);
+
+                }
                 $ruleValidator = $this->rules[$rule];
-                if ($ruleValidator->validate($fromData, $fieldName, []))
+                if ($ruleValidator->validate($fromData, $fieldName, $ruleParams))
                 {
                     continue;
                 }
                 else
                 {
-                    $errors[$fieldName][] = $ruleValidator->getMessage($fromData, $fieldName, []);
+                    $errors[$fieldName][] = $ruleValidator->getMessage($fromData, $fieldName, $ruleParams);
                 }
             }
         }
