@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__."/src/Framework/Database.php";
+include __DIR__ . "/src/Framework/Database.php";
 
 use Framework\Database;
 
@@ -12,6 +12,16 @@ $db = new Database("mysql", [
 ], "root", "");
 
 
-$query = "SELECT * FROM products";
-$stmt = $db->connection->query($query);
-var_dump($stmt->fetchAll());
+try
+{
+
+}
+catch (Exception $error)
+{
+
+}
+
+
+$sqlFile = file_get_contents("./database.sql");
+
+$db->query($sqlFile);
