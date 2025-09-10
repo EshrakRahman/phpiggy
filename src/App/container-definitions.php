@@ -2,11 +2,16 @@
 
 declare(strict_types=1);
 
-use Framework\TemplateEngine;
+use Framework\{TemplateEngine, Database};
 use App\Config\Path;
 use App\Services\ValidatorService;
 
-return[
+return [
     TemplateEngine::class => fn() => new TemplateEngine(Path::VIEW),
-    ValidatorService::class => fn() => new ValidatorService()
+    ValidatorService::class => fn() => new ValidatorService(),
+    Database::class => fn() => new Database($_ENV["DB_DRIVER"], [
+        "host" => $_ENV["DB_HOST"],
+        "port" => $_ENV["DB_PORT"],
+        "dbname" => $_ENV["DB_NAME"]
+    ], userName: $_ENV["DB_USER"] ,password: $_ENV["DB_PASS"])
 ];
