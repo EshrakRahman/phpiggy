@@ -11,8 +11,7 @@ class UrlRule implements RuleInterface
 {
     public function validate(array $data, string $field, array $params): bool
     {
-        return in_array($data["$field"], $params);
-        
+        return (bool) filter_var($data[$field], FILTER_VALIDATE_URL);
     }
 
     public function getMessage(array $data, string $field, array $params): string

@@ -1,17 +1,18 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
 namespace App\Controllers;
+
 use Framework\TemplateEngine;
-use App\Config\Path;
-class AboutController {
-    
+use App\Services\{ValidatorService, UserService};
 
-    public function __construct(private TemplateEngine $view)
+class AboutController
+{
+
+
+    public function __construct(private TemplateEngine $view, private ValidatorService $validatorService, private UserService $userService)
     {
-
-
     }
 
     public function about()
@@ -20,7 +21,5 @@ class AboutController {
             "title" => "About",
             "dangerousData" => "<script> alert(123)</script>"
         ]);
-        
     }
-
 }
