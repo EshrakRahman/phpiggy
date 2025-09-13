@@ -4,6 +4,8 @@
 >
 
   <form class="grid grid-cols-1 gap-6" method="POST"> 
+    <?php include $this->resolve("partials/_csrf.php") ?>
+
     <!-- Email -->
     <label class="block">
       <span class="text-gray-700">Email address</span>
