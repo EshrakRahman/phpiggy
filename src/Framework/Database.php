@@ -23,7 +23,9 @@ class Database
 
         try
         {
-            $this->connection = new PDO($dsn, $userName, $password);
+            $this->connection = new PDO($dsn, $userName, $password, [
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]);
         }
         catch (PDOException $e)
         {
@@ -44,5 +46,15 @@ class Database
     public function count()
     {
         return $this->stmt->fetchColumn();
+    }
+
+    public function find()
+    {
+        return $this->stmt->fetch();
+    }
+
+    public function id()
+    {
+        return $this->connection->lastInsertId();
     }
 }
