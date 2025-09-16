@@ -51,5 +51,6 @@ class ValidatorService
             "amount" => ["required"],
             "date" => ["required"]
         ]);
+    
     }
 }
