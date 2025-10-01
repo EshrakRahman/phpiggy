@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace App\Config;
 
 use Framework\App;
-use App\Controllers\{HomeController, AboutController, AuthController,TransactionController};
+use App\Controllers\{
+    HomeController,
+    AboutController,
+    AuthController,
+    TransactionController,
+    ReceiptController
+};
 
 use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware};
 
@@ -21,7 +27,19 @@ function registerRoutes(App $app)
 
     $app->get("/logout", [AuthController::class, "logout"])->add(AuthRequiredMiddleware::class);
 
-    $app->get("/transaction" ,[TransactionController::class, "createView"])->add(middleware: AuthRequiredMiddleware::class);
+    $app->get("/transaction", [TransactionController::class, "createView"])->add(middleware: AuthRequiredMiddleware::class);
 
-    $app->post("/transaction" ,[TransactionController::class, "create"])->add(middleware: AuthRequiredMiddleware::class);
+    $app->post("/transaction", [TransactionController::class, "create"])->add(middleware: AuthRequiredMiddleware::class);
+
+
+    $app->get("/transaction/{transaction}", [TransactionController::class, "editView"]);
+
+    $app->post("/transaction/{transaction}", [TransactionController::class, "edit"]);
+
+
+    $app->delete("/transaction/{transaction}", [TransactionController::class, "delete"]);
+
+    $app->get("/transaction/{transaction}/receipt", [ReceiptController::class, "uploadView"]);
+
+    $app->post("/transaction/{transaction}/receipt", [ReceiptController::class, "upload"]);
 }
