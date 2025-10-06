@@ -50,6 +50,14 @@ class TransactionService
             LIMIT {$length} OFFSET {$offset}",
             $params
         )->findAll();
+        $transaction = array_map(function (array $transaction)
+        {
+            $transaction["receipts"] = $this->db->query("
+                select * from receipts where transaction_id = :transaction_id
+            ", [
+                "transaction_id" => $transaction["id"]
+            ])->findAll();
+        }, $transaction);
 
         $transactionCount = $this->db->query(
             "SELECT COUNT(*) FROM transactions WHERE user_id = :user_id

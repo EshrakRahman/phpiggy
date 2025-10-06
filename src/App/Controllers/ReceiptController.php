@@ -5,37 +5,68 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Framework\TemplateEngine;
-use App\Services\{TransactionService};
+use App\Services\{TransactionService, RecieptService};
+
 
 class ReceiptController
 {
-  public function __construct(
-    private TemplateEngine $view,
-    private TransactionService $transactionService
-  ) {
-  }
-
-  public function uploadView(array $params)
-  {
-    $transaction = $this->transactionService->getUserTransaction($params['transaction']);
-
-    if (!$transaction) {
-      redirectTo("/");
+    public function __construct(
+        private TemplateEngine $view,
+        private TransactionService $transactionService,
+        private RecieptService $recieptService
+    )
+    {
     }
 
-    echo $this->view->render("receipts/create.php");
-  }
+    public function uploadView(array $params)
+    {
+        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
 
-  public function upload(array $params)
-  {
-    $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        if (!$transaction)
+        {
+            redirectTo("/");
+        }
 
-    if (!$transaction) {
-      redirectTo("/");
+        echo $this->view->render("receipts/create.php");
     }
 
-    dd($_FILES);
+    public function upload(array $params)
+    {
+        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
 
-    redirectTo("/");
-  }
+        if (!$transaction)
+        {
+            redirectTo("/");
+        }
+        $reciptFile = $_FILES["receipt"] ?? null;
+
+        $this->recieptService->validateFile($reciptFile);
+
+        $this->recieptService->upload($reciptFile, $transaction["id"]);
+
+
+        redirectTo("/");
+    }
+
+    public function download()
+    {
+        $transaction = $this->transactionService->getUserTransaction(
+            $params["transaction"]
+        );
+
+        if (empty($transaction))
+        {
+            redirectTo('/');
+        }
+
+        $receipt = $this->recieptService->getReceipt($params['receipt']);
+
+        if (empty($receipt))
+        {
+            redirectTo('/');
+        }
+    }
+    public function delete()
+    {
+    }
 }

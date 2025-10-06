@@ -10,4 +10,6 @@ class Path
     public const SOURCE = __DIR__."/../../";
 
     public const ROOT = __DIR__."/../../../";
-}
+
+    public const STORAGE_UPLOADS = __DIR__ . "/../../../storage/uploads";
+} 
