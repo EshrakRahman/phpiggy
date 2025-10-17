@@ -10,7 +10,8 @@ use App\Controllers\{
     AboutController,
     AuthController,
     TransactionController,
-    ReceiptController
+    ReceiptController,
+    ErrorController
 };
 
 use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware};
@@ -45,4 +46,6 @@ function registerRoutes(App $app)
 
     $app->get("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "download"])->add(middleware: AuthRequiredMiddleware::class);
     $app->delete("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "delete"])->add(middleware: AuthRequiredMiddleware::class);
+
+    $app->setErrorHandler([ErrorController::class, "notFound"]);
 }

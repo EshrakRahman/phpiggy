@@ -20,7 +20,6 @@ class App
             $containerDefinitionsPath = include $containerDefinitionsPath;
             $this->container->addDefinitions($containerDefinitionsPath);
         }
-
     }
     public function run()
     {
@@ -61,5 +60,8 @@ class App
         $this->router->addRouteMiddleware($middleware);
     }
 
-
+    public function setErrorHandler(array $controller)
+    {
+        $this->router->setErrorHandler($controller);
+    }
 }

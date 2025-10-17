@@ -87,5 +87,31 @@ class RecieptService
         ", [
             "id" => $id
         ])->find();
+
+        return $reciept;
+    }
+
+    public function read(array $reciept)
+    {
+        $filePath = Path::STORAGE_UPLOADS . "/" . $reciept["storage_filename"];
+
+        if (!file_exists($filePath))
+        {
+            redirectTo("/");
+        }
+        header("Content-Disposition: inline; filename=\"{$reciept['original_filename']}\"");
+        header("Content-Type: {$reciept['media_type']}");
+
+        readfile($filePath);
+    }
+
+    public function delete(array $receipt)
+    {
+        $filePath = Path::STORAGE_UPLOADS . "/" . $receipt["storage_filename"];
+        unlink($filePath);
+
+        $this->db->query("delete from receipts where id = :id", [
+            "id" => $receipt["id"]
+        ]);
     }
 }

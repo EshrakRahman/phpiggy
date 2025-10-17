@@ -37,36 +37,42 @@ class TransactionService
 
     public function getUserTransactions(int $length, int $offset)
     {
-        $searchTerm = addcslashes($_GET["s"] ?? "", "%_");
-        $params =
-            [
-                "user_id" => $_SESSION["user"],
-                "description" => "%{$searchTerm}%"
-            ];
+        $searchTerm = addcslashes($_GET['s'] ?? '', '%_');
+        $params = [
+            'user_id' => $_SESSION['user'],
+            'description' => "%{$searchTerm}%"
+        ];
 
-        $transaction = $this->db->query(
-            "SELECT *, DATE_FORMAT(date, '%Y-%m-%d') as formatted_date FROM transactions WHERE user_id = :user_id
-            AND description LIKE :description
-            LIMIT {$length} OFFSET {$offset}",
+        $transactions = $this->db->query(
+            "SELECT *, DATE_FORMAT(date, '%Y-%m-%d') as formatted_date
+      FROM transactions 
+      WHERE user_id = :user_id
+      AND description LIKE :description
+      LIMIT {$length} OFFSET {$offset}",
             $params
         )->findAll();
-        $transaction = array_map(function (array $transaction)
+
+        $transactions = array_map(function (array $transaction)
         {
-            $transaction["receipts"] = $this->db->query("
-                select * from receipts where transaction_id = :transaction_id
-            ", [
-                "transaction_id" => $transaction["id"]
-            ])->findAll();
-        }, $transaction);
+            $transaction['receipts'] = $this->db->query(
+                "SELECT * FROM receipts WHERE transaction_id = :transaction_id",
+                ['transaction_id' => $transaction['id']]
+            )->findAll();
+
+            return $transaction;
+        }, $transactions);
 
         $transactionCount = $this->db->query(
-            "SELECT COUNT(*) FROM transactions WHERE user_id = :user_id
-            AND description LIKE :description",
+            "SELECT COUNT(*)
+      FROM transactions 
+      WHERE user_id = :user_id
+      AND description LIKE :description",
             $params
         )->count();
 
-        return [$transaction, $transactionCount];
+        return [$transactions, $transactionCount];
     }
+
 
     public function getUserTransaction(string $id)
     {
