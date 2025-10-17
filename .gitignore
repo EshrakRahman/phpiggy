@@ -31,3 +31,8 @@ Thumbs.db
 # PHPUnit / test coverage
 .phpunit.result.cache
 coverage/
+
+# ignore uploads folder 
+
+storage/uploads/*
+!storage/uploads/.gitkeep
